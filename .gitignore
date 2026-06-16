@@ -1,0 +1,73 @@
+# Local secrets and credentials
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.token
+token
+tokens/
+
+# Hugging Face / credential caches
+.cache/
+.huggingface/
+hf_cache/
+
+# OS and editor files
+.DS_Store
+._*
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Logs and Slurm outputs
+logs/
+*.log
+*.err
+*.out
+slurm-*.out
+download_*_*.log
+download_*_*.err
+prepare_*_*.log
+prepare_*_*.err
+upload_hf_data_*.log
+upload_hf_data_*.err
+
+# Local datasets and generated artifacts
+datasets/
+datatondatasets/
+*.tar
+*.tar.gz
+*.zip
+*.part
+*.tmp
+
+# Large generated medical imaging/data files
+*.dcm
+*.nii
+*.nii.gz
+*.npz
+*.npy
+*.png
+*.jpg
+*.jpeg
+*.csv
+*.json
+
+# Keep repo documentation/assets under datathon.
+!README.md
+!logo/
+!logo/logo.png
+!readmes/
+!readmes/*.md
