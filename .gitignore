@@ -43,6 +43,8 @@ prepare_*_*.log
 prepare_*_*.err
 upload_hf_data_*.log
 upload_hf_data_*.err
+upload_hf*.slurm
+upload_hf*.sh
 
 # Local datasets and generated artifacts
 datasets/

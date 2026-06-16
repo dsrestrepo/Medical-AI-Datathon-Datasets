@@ -163,44 +163,6 @@ used to download and preprocess the datasets. Participants do not need to run
 these scripts to use the clean datasets, but they are included for transparency
 and reproducibility.
 
-### Hugging Face Upload
-
-The clean datasets can be uploaded to gated Hugging Face dataset repositories:
-
-```text
-dsrestrepo/mimic-cxr-datathon
-dsrestrepo/mbrset-datathon
-dsrestrepo/cbis-ddsm-datathon
-dsrestrepo/lidc-idri-datathon-224
-dsrestrepo/lidc-idri-datathon-384
-```
-
-Authenticate once before submitting the upload job:
-
-```bash
-pip install -U huggingface_hub
-hf auth login
-```
-
-Upload all datasets:
-
-```bash
-sbatch datathon/jobs/upload_hf_datasets.slurm
-```
-
-Upload one dataset:
-
-```bash
-HF_DATASET=mimic sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=mbrset sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=cbis sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=lidc224 sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=lidc384 sbatch datathon/jobs/upload_hf_datasets.slurm
-```
-
-Each Hugging Face repository should be public with gated/manual access enabled
-from the repository settings.
-
 ## Español
 
 Este repositorio contiene el código usado para descargar, limpiar y preprocesar los
@@ -359,41 +321,3 @@ Las carpetas `jobs/` y `scripts/` contienen los jobs de Slurm y scripts de
 Python usados para descargar y preprocesar los datasets. Los participantes no
 necesitan ejecutar estos scripts para usar los datasets limpios, pero se
 incluyen por transparencia y reproducibilidad.
-
-### Subida a Hugging Face
-
-Los datasets limpios pueden subirse a repositorios gated de Hugging Face:
-
-```text
-dsrestrepo/mimic-cxr-datathon
-dsrestrepo/mbrset-datathon
-dsrestrepo/cbis-ddsm-datathon
-dsrestrepo/lidc-idri-datathon-224
-dsrestrepo/lidc-idri-datathon-384
-```
-
-Autentica una vez antes de enviar el job:
-
-```bash
-pip install -U huggingface_hub
-hf auth login
-```
-
-Subir todos los datasets:
-
-```bash
-sbatch datathon/jobs/upload_hf_datasets.slurm
-```
-
-Subir un dataset específico:
-
-```bash
-HF_DATASET=mimic sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=mbrset sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=cbis sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=lidc224 sbatch datathon/jobs/upload_hf_datasets.slurm
-HF_DATASET=lidc384 sbatch datathon/jobs/upload_hf_datasets.slurm
-```
-
-Cada repositorio de Hugging Face debe ser público con acceso gated/manual
-activado desde la configuración del repositorio.
