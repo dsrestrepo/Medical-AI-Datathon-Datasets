@@ -6,7 +6,7 @@
 
 ## English
 
-This folder contains the code used to download, clean, and preprocess the
+This repository contains the code used to download, clean, and preprocess the
 medical imaging datasets prepared for the Medical AI Datathon. The goal is to
 provide participant-friendly datasets with simple file structures,
 metadata/label CSV files, and example notebooks showing how to load and inspect
@@ -60,8 +60,10 @@ Possible tasks:
 - Report-aware or multimodal modeling.
 - Subgroup or fairness analysis using metadata.
 
-Original source: https://www.nature.com/articles/s41597-019-0322-0
-Dataset: https://physionet.org/content/mimic-cxr/
+Original sources:
+
+- Paper: https://www.nature.com/articles/s41597-019-0322-0
+- Dataset: https://physionet.org/content/mimic-cxr/
 
 #### mBRSET
 
@@ -83,8 +85,10 @@ Possible tasks:
 - Glaucoma-related screening using `increased_cdr`.
 - Subgroup, robustness, or fairness analysis.
 
-Original source: https://www.nature.com/articles/s41597-025-04627-3
-Dataset: https://physionet.org/content/mbrset/
+Original sources:
+
+- Paper: https://www.nature.com/articles/s41597-025-04627-3
+- Dataset: https://physionet.org/content/mbrset/
 
 #### CBIS-DDSM
 
@@ -199,7 +203,7 @@ from the repository settings.
 
 ## Español
 
-Esta carpeta contiene el código usado para descargar, limpiar y preprocesar los
+Este repositorio contiene el código usado para descargar, limpiar y preprocesar los
 datasets de imágenes médicas preparados para el Medical AI Datathon. El objetivo
 es entregar datasets fáciles de usar, con estructuras simples, archivos CSV de
 metadatos/etiquetas y notebooks de ejemplo para cargar e inspeccionar los datos.
@@ -253,8 +257,10 @@ Tareas posibles:
 - Modelado multimodal o con reportes.
 - Análisis por subgrupos o equidad usando metadatos.
 
-Fuente original: https://www.nature.com/articles/s41597-019-0322-0
-dataset: https://physionet.org/content/mimic-cxr/
+Fuentes originales:
+
+- Paper: https://www.nature.com/articles/s41597-019-0322-0
+- Dataset: https://physionet.org/content/mimic-cxr/
 
 #### mBRSET
 
@@ -276,8 +282,10 @@ Tareas posibles:
 - Tamizaje relacionado con glaucoma usando `increased_cdr`.
 - Análisis por subgrupos, robustez o equidad.
 
-Fuente original: https://www.nature.com/articles/s41597-025-04627-3
-Dataset: https://physionet.org/content/mbrset/
+Fuentes originales:
+
+- Paper: https://www.nature.com/articles/s41597-025-04627-3
+- Dataset: https://physionet.org/content/mbrset/
 
 #### CBIS-DDSM
 
