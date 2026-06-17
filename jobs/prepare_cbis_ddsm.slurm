@@ -29,6 +29,6 @@ OUTPUT="$SCRATCH/datasets/datatondatasets/CBIS-DDSM-clean"
 python3 "$DATATHON_DIR/scripts/prepare_cbis_ddsm.py" \
     --source "$SOURCE" \
     --output "$OUTPUT" \
-    --size "${CBIS_IMAGE_SIZE:-224}" \
+    --size "${CBIS_IMAGE_SIZE:-448}" \
     ${CBIS_OVERWRITE:+--overwrite}
 

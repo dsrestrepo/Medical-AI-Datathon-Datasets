@@ -23,6 +23,10 @@ DATASETS = {
         "repo_id": "dsrestrepo/cbis-ddsm-datathon",
         "folder": "CBIS-DDSM-clean",
     },
+    "cbis224": {
+        "repo_id": "dsrestrepo/cbis-ddsm-datathon-224",
+        "folder": "CBIS-DDSM-clean-224",
+    },
     "lidc224": {
         "repo_id": "dsrestrepo/lidc-idri-datathon-224",
         "folder": "LIDC-IDRI-clean-224",
@@ -63,9 +67,9 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--no-extract-shards",
+        "--no-extract-images",
         action="store_true",
-        help="Do not extract image_shards/*.tar files after download.",
+        help="Do not extract images.tar.gz after download.",
     )
     return parser.parse_args()
 
@@ -91,29 +95,28 @@ def main() -> None:
             local_dir=local_dir,
             token=args.token,
         )
-        if not args.no_extract_shards:
-            extract_image_shards(local_dir)
+        if not args.no_extract_images:
+            extract_images_archive(local_dir)
 
     print(f"Done. Datasets are available under: {output_dir}", flush=True)
 
 
-def extract_image_shards(dataset_dir: Path) -> None:
-    shards_dir = dataset_dir / "image_shards"
-    if not shards_dir.is_dir():
+def extract_images_archive(dataset_dir: Path) -> None:
+    archive_path = dataset_dir / "images.tar.gz"
+    if not archive_path.is_file():
         return
 
     images_dir = dataset_dir / "images"
     images_dir.mkdir(exist_ok=True)
     dataset_root = dataset_dir.resolve()
 
-    for shard in sorted(shards_dir.glob("*.tar")):
-        print(f"Extracting {shard}", flush=True)
-        with tarfile.open(shard, "r") as tar:
-            for member in tar.getmembers():
-                target = (dataset_dir / member.name).resolve()
-                if not str(target).startswith(str(dataset_root)):
-                    raise RuntimeError(f"Unsafe path in tar shard: {member.name}")
-                tar.extract(member, dataset_dir)
+    print(f"Extracting {archive_path}", flush=True)
+    with tarfile.open(archive_path, "r:gz") as tar:
+        for member in tar.getmembers():
+            target = (dataset_dir / member.name).resolve()
+            if not str(target).startswith(str(dataset_root)):
+                raise RuntimeError(f"Unsafe path in image archive: {member.name}")
+            tar.extract(member, dataset_dir)
 
 
 if __name__ == "__main__":

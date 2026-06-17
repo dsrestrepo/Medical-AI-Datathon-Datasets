@@ -99,9 +99,11 @@ PATH-TO-DATASET/CBIS-DDSM-clean/
 └── README.md
 ```
 
-Contains resized full mammogram PNG images. `labels.csv` includes image names,
-pathology labels, breast-view metadata, abnormality descriptors, and a binary
-`is_malignant` label.
+Contains resized full mammogram PNG images. The main Hugging Face dataset
+`cbis` uses 448x448 images. An alternative 224x224 version is available
+separately as `cbis224`. `labels.csv` includes image names, pathology labels,
+breast-view metadata, abnormality descriptors, and a binary `is_malignant`
+label.
 
 Possible tasks:
 
@@ -124,7 +126,8 @@ PATH-TO-DATASET/LIDC-IDRI-clean-224/
 └── README.md
 ```
 
-An optional higher-resolution version can also be created:
+The Hugging Face dataset key `lidc224` uses 224x224 CT slices. An alternative
+384x384 version is available separately as `lidc384`:
 
 ```text
 PATH-TO-DATASET/LIDC-IDRI-clean-384/
@@ -230,9 +233,16 @@ Available dataset keys:
 
 - `mimic`: MIMIC-CXR.
 - `mbrset`: mBRSET.
-- `cbis`: CBIS-DDSM.
+- `cbis`: CBIS-DDSM resized to 448x448.
+- `cbis224`: CBIS-DDSM resized to 224x224.
 - `lidc224`: LIDC-IDRI resized to 224x224.
 - `lidc384`: LIDC-IDRI resized to 384x384.
+
+Some datasets may be stored on Hugging Face with the image folder compressed as
+`images.tar.gz` to avoid uploading tens of thousands of small image files. The
+download script extracts this archive automatically, so after the command
+finishes you should still work with a normal dataset folder containing
+`images/`, CSV files, and `README.md`.
 
 After download, point the notebooks to the folder you used as `--output-dir`.
 For example:
@@ -336,9 +346,12 @@ PATH-TO-DATASET/CBIS-DDSM-clean/
 └── README.md
 ```
 
-Contiene mamografías completas redimensionadas en formato PNG. `labels.csv`
-incluye nombres de imagen, etiquetas patológicas, metadatos de vista mamaria,
-descriptores de anormalidades y una etiqueta binaria `is_malignant`.
+Contiene mamografías completas redimensionadas en formato PNG. El dataset
+principal en Hugging Face, `cbis`, usa imágenes de 448x448. Una versión
+alternativa de 224x224 está disponible por separado como `cbis224`.
+`labels.csv` incluye nombres de imagen, etiquetas patológicas, metadatos de
+vista mamaria, descriptores de anormalidades y una etiqueta binaria
+`is_malignant`.
 
 Tareas posibles:
 
@@ -361,7 +374,8 @@ PATH-TO-DATASET/LIDC-IDRI-clean-224/
 └── README.md
 ```
 
-También puede crearse una versión opcional de mayor resolución:
+La llave de Hugging Face `lidc224` usa cortes CT de 224x224. Una versión
+alternativa de 384x384 está disponible por separado como `lidc384`:
 
 ```text
 PATH-TO-DATASET/LIDC-IDRI-clean-384/
@@ -470,9 +484,16 @@ Llaves disponibles:
 
 - `mimic`: MIMIC-CXR.
 - `mbrset`: mBRSET.
-- `cbis`: CBIS-DDSM.
+- `cbis`: CBIS-DDSM redimensionado a 448x448.
+- `cbis224`: CBIS-DDSM redimensionado a 224x224.
 - `lidc224`: LIDC-IDRI redimensionado a 224x224.
 - `lidc384`: LIDC-IDRI redimensionado a 384x384.
+
+Algunos datasets pueden estar almacenados en Hugging Face con la carpeta de
+imágenes comprimida como `images.tar.gz` para evitar subir decenas de miles de
+imágenes pequeñas. El script de descarga extrae este archivo automáticamente,
+así que después de terminar el comando deberías trabajar con una carpeta normal
+del dataset que contiene `images/`, archivos CSV y `README.md`.
 
 Después de descargar, apunta los notebooks a la carpeta usada en `--output-dir`.
 Por ejemplo:

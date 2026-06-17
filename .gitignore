@@ -45,8 +45,20 @@ prepare_*_*.log
 prepare_*_*.err
 upload_hf_data_*.log
 upload_hf_data_*.err
+audit_hf_data_*.log
+audit_hf_data_*.err
+package_hf_data_*.log
+package_hf_data_*.err
+publish_hf_data_*.log
+publish_hf_data_*.err
 upload_hf*.slurm
 upload_hf*.sh
+audit_hf*.slurm
+package_hf*.slurm
+publish_hf*.slurm
+scripts/upload_hf_dataset.py
+scripts/audit_hf_dataset_upload.py
+scripts/package_hf_dataset.py
 
 # Local datasets and generated artifacts
 datasets/
