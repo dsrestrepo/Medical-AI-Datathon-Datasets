@@ -56,9 +56,11 @@ upload_hf*.sh
 audit_hf*.slurm
 package_hf*.slurm
 publish_hf*.slurm
+jobs/*hf*.slurm
 scripts/upload_hf_dataset.py
 scripts/audit_hf_dataset_upload.py
 scripts/package_hf_dataset.py
+scripts/*hf*upload*.py
 
 # Local datasets and generated artifacts
 datasets/
