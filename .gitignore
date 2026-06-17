@@ -10,6 +10,7 @@ tokens/
 
 # Hugging Face / credential caches
 .cache/
+.uv-cache/
 .huggingface/
 hf_cache/
 
@@ -23,6 +24,7 @@ Thumbs.db
 *.swo
 
 # Python artifacts
+.venv/
 __pycache__/
 *.py[cod]
 *$py.class

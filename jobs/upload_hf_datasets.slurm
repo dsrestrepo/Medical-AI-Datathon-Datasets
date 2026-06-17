@@ -35,10 +35,21 @@ if ! hf auth whoami >/dev/null 2>&1; then
 fi
 
 DATASETS_ROOT="${DATASETS_ROOT:-$SCRATCH/datasets/datatondatasets}"
+: "${HF_DATASET:?Set HF_DATASET to one of: mimic, mbrset, cbis, lidc224, lidc384}"
+
+SCRIPT_DIR="${SLURM_SUBMIT_DIR:-$PWD}/scripts"
+if [ ! -f "$SCRIPT_DIR/upload_hf_dataset.py" ]; then
+    echo "Could not find $SCRIPT_DIR/upload_hf_dataset.py"
+    echo "Submit this job from the datathon repository root."
+    exit 1
+fi
+
+export HF_XET_HIGH_PERFORMANCE="${HF_XET_HIGH_PERFORMANCE:-1}"
+export HF_HOME="${HF_HOME:-$WORK/.cache/huggingface}"
 
 upload_one() {
     local name="$1"
-    local repo_id="$2"
+    local key="$2"
     local local_dir="$3"
 
     if [ ! -d "$local_dir" ]; then
@@ -48,36 +59,34 @@ upload_one() {
 
     echo "Uploading $name"
     echo "  local: $local_dir"
-    echo "  repo:  $repo_id"
-    hf upload-large-folder "$repo_id" "$local_dir" --repo-type dataset
+    echo "  key:   $key"
+    echo "  mode:  ${HF_UPLOAD_MODE:-folder}"
+    python "$SCRIPT_DIR/upload_hf_dataset.py" \
+        --datasets-root "$DATASETS_ROOT" \
+        --dataset "$key" \
+        --mode "${HF_UPLOAD_MODE:-folder}" \
+        --num-workers "${HF_NUM_WORKERS:-4}"
 }
 
-case "${HF_DATASET:-all}" in
-    all)
-        upload_one "MIMIC-CXR" "dsrestrepo/mimic-cxr-datathon" "$DATASETS_ROOT/MIMIC-CXR"
-        upload_one "mBRSET" "dsrestrepo/mbrset-datathon" "$DATASETS_ROOT/mBRSET"
-        upload_one "CBIS-DDSM" "dsrestrepo/cbis-ddsm-datathon" "$DATASETS_ROOT/CBIS-DDSM-clean"
-        upload_one "LIDC-IDRI 224" "dsrestrepo/lidc-idri-datathon-224" "$DATASETS_ROOT/LIDC-IDRI-clean-224"
-        upload_one "LIDC-IDRI 384" "dsrestrepo/lidc-idri-datathon-384" "$DATASETS_ROOT/LIDC-IDRI-clean-384"
-        ;;
+case "$HF_DATASET" in
     mimic)
-        upload_one "MIMIC-CXR" "dsrestrepo/mimic-cxr-datathon" "$DATASETS_ROOT/MIMIC-CXR"
+        upload_one "MIMIC-CXR" "mimic" "$DATASETS_ROOT/MIMIC-CXR"
         ;;
     mbrset)
-        upload_one "mBRSET" "dsrestrepo/mbrset-datathon" "$DATASETS_ROOT/mBRSET"
+        upload_one "mBRSET" "mbrset" "$DATASETS_ROOT/mBRSET"
         ;;
     cbis)
-        upload_one "CBIS-DDSM" "dsrestrepo/cbis-ddsm-datathon" "$DATASETS_ROOT/CBIS-DDSM-clean"
+        upload_one "CBIS-DDSM" "cbis" "$DATASETS_ROOT/CBIS-DDSM-clean"
         ;;
     lidc224)
-        upload_one "LIDC-IDRI 224" "dsrestrepo/lidc-idri-datathon-224" "$DATASETS_ROOT/LIDC-IDRI-clean-224"
+        upload_one "LIDC-IDRI 224" "lidc224" "$DATASETS_ROOT/LIDC-IDRI-clean-224"
         ;;
     lidc384)
-        upload_one "LIDC-IDRI 384" "dsrestrepo/lidc-idri-datathon-384" "$DATASETS_ROOT/LIDC-IDRI-clean-384"
+        upload_one "LIDC-IDRI 384" "lidc384" "$DATASETS_ROOT/LIDC-IDRI-clean-384"
         ;;
     *)
         echo "Unknown HF_DATASET='${HF_DATASET}'"
-        echo "Use one of: all, mimic, mbrset, cbis, lidc224, lidc384"
+        echo "Use one of: mimic, mbrset, cbis, lidc224, lidc384"
         exit 1
         ;;
 esac

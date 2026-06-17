@@ -145,23 +145,101 @@ Original source: https://www.cancerimagingarchive.net/collection/lidc-idri/
 
 ### Notebooks
 
-Each clean dataset has a simple notebook in `datathon/notebooks/` showing how
-to read the labels, inspect columns, summarize labels, and visualize images or
-CT volumes:
+The notebooks in `datathon/notebooks/` are meant to be small entry points for
+participants. They show how to point to a local dataset folder, read the label
+files, inspect the available columns, and display representative images or CT
+volumes.
 
-```text
-datathon/notebooks/01_mimic_cxr_overview.ipynb
-datathon/notebooks/02_mbrset_overview.ipynb
-datathon/notebooks/03_cbis_ddsm_overview.ipynb
-datathon/notebooks/04_lidc_idri_overview.ipynb
+- `01_mimic_cxr_overview.ipynb`: reads the MIMIC-CXR split CSV files, inspects
+  the chest X-ray labels and reports, and displays example X-ray images.
+- `02_mbrset_overview.ipynb`: reads the mBRSET metadata file, summarizes
+  retinal labels such as diabetic retinopathy and edema, and displays fundus
+  images.
+- `03_cbis_ddsm_overview.ipynb`: reads `labels.csv` for CBIS-DDSM, inspects
+  pathology and abnormality labels, and displays resized mammography images.
+- `04_lidc_idri_overview.ipynb`: reads the LIDC-IDRI CT-level, nodule-level,
+  and reader-level CSV files, then visualizes slices from the 3D CT volumes.
+- `05_mimic_cxr_medsiglip_embeddings.ipynb`: demonstrates MedSigLIP image/text
+  embeddings and simple zero-shot prompts for MIMIC-CXR.
+- `06_mbrset_medsiglip_embeddings.ipynb`: demonstrates MedSigLIP embeddings,
+  ophthalmology prompts, and a PCA view for mBRSET.
+- `07_cbis_ddsm_medsiglip_embeddings.ipynb`: demonstrates MedSigLIP embeddings,
+  mammography prompts, and a PCA view for CBIS-DDSM.
+- `08_lidc_idri_colipri_embeddings.ipynb`: demonstrates COLIPRI embeddings and
+  simple lung nodule prompts for 3D LIDC-IDRI CT volumes.
+
+### Environment Setup With uv
+
+This repository includes a `pyproject.toml` file with the packages needed to
+run the notebooks, read the images/volumes, and download gated datasets from
+Hugging Face. It also includes PyTorch, Transformers, and COLIPRI so the same
+environment can later be used to extract embeddings from foundation models such
+as MedSigLIP or COLIPRI, or to train small local models on top of those
+embeddings. The embedding examples use `scikit-learn` for simple PCA plots,
+`sentencepiece` for the SigLIP tokenizer used by MedSigLIP, and `python-dotenv`
+to load an optional local `.env` file containing `HF_TOKEN`.
+
+From this repository root:
+
+```bash
+uv sync
 ```
 
-### Reproducibility
+Register the environment as a Jupyter kernel:
 
-The `jobs/` and `scripts/` folders contain the Slurm jobs and Python scripts
-used to download and preprocess the datasets. Participants do not need to run
-these scripts to use the clean datasets, but they are included for transparency
-and reproducibility.
+```bash
+uv run python -m ipykernel install --user \
+  --name medical-ai-datathon \
+  --display-name "Medical AI Datathon"
+```
+
+Then open Jupyter in local:
+
+```bash
+uv run jupyter lab
+```
+
+Inside the notebooks, select the kernel named `Medical AI Datathon`.
+
+### Download Datasets From Hugging Face
+
+The datasets are hosted in gated Hugging Face repositories. After your access is
+approved, authenticate once:
+
+```bash
+uv run hf auth login
+```
+
+Then download all datasets to a local folder:
+
+```bash
+uv run python scripts/download_hf_datasets.py \
+  --output-dir /path/to/local/datasets \
+  --datasets all
+```
+
+Download only selected datasets:
+
+```bash
+uv run python scripts/download_hf_datasets.py \
+  --output-dir /path/to/local/datasets \
+  --datasets mimic cbis lidc224
+```
+
+Available dataset keys:
+
+- `mimic`: MIMIC-CXR.
+- `mbrset`: mBRSET.
+- `cbis`: CBIS-DDSM.
+- `lidc224`: LIDC-IDRI resized to 224x224.
+- `lidc384`: LIDC-IDRI resized to 384x384.
+
+After download, point the notebooks to the folder you used as `--output-dir`.
+For example:
+
+```python
+DATASET_DIR = Path("/path/to/local/datasets/MIMIC-CXR")
+```
 
 ## Español
 
@@ -304,20 +382,101 @@ Fuente original: https://www.cancerimagingarchive.net/collection/lidc-idri/
 
 ### Notebooks
 
-Cada dataset limpio tiene un notebook sencillo en `datathon/notebooks/` que
-muestra cómo leer las etiquetas, inspeccionar columnas, resumir etiquetas y
-visualizar imágenes o volúmenes CT:
+Los notebooks en `datathon/notebooks/` están pensados como puntos de entrada
+sencillos para participantes. Muestran cómo apuntar a una carpeta local del
+dataset, leer los archivos de etiquetas, inspeccionar las columnas disponibles
+y visualizar imágenes o volúmenes CT representativos.
 
-```text
-datathon/notebooks/01_mimic_cxr_overview.ipynb
-datathon/notebooks/02_mbrset_overview.ipynb
-datathon/notebooks/03_cbis_ddsm_overview.ipynb
-datathon/notebooks/04_lidc_idri_overview.ipynb
+- `01_mimic_cxr_overview.ipynb`: lee los CSV por split de MIMIC-CXR,
+  inspecciona las etiquetas y reportes de radiografías de tórax, y muestra
+  imágenes de ejemplo.
+- `02_mbrset_overview.ipynb`: lee el archivo de metadata de mBRSET, resume
+  etiquetas retinales como retinopatía diabética y edema, y muestra imágenes de
+  fondo de ojo.
+- `03_cbis_ddsm_overview.ipynb`: lee `labels.csv` de CBIS-DDSM, inspecciona
+  etiquetas de patología y tipo de anormalidad, y muestra mamografías
+  redimensionadas.
+- `04_lidc_idri_overview.ipynb`: lee los CSV a nivel CT, nódulo y lector de
+  LIDC-IDRI, y visualiza cortes de los volúmenes CT 3D.
+- `05_mimic_cxr_medsiglip_embeddings.ipynb`: muestra embeddings de imagen/texto
+  con MedSigLIP y prompts zero-shot simples para MIMIC-CXR.
+- `06_mbrset_medsiglip_embeddings.ipynb`: muestra embeddings con MedSigLIP,
+  prompts de oftalmología y una vista PCA para mBRSET.
+- `07_cbis_ddsm_medsiglip_embeddings.ipynb`: muestra embeddings con MedSigLIP,
+  prompts de mamografía y una vista PCA para CBIS-DDSM.
+- `08_lidc_idri_colipri_embeddings.ipynb`: muestra embeddings con COLIPRI y
+  prompts simples sobre nódulos pulmonares para volúmenes CT 3D de LIDC-IDRI.
+
+### Configuración del Entorno con uv
+
+Este repositorio incluye un archivo `pyproject.toml` con los paquetes necesarios
+para ejecutar los notebooks, leer imágenes/volúmenes y descargar datasets gated
+desde Hugging Face. También incluye PyTorch, Transformers y COLIPRI para que el
+mismo entorno pueda usarse más adelante para extraer embeddings de modelos
+fundacionales como MedSigLIP o COLIPRI, o entrenar modelos locales pequeños
+sobre esos embeddings. Los ejemplos de embeddings usan `scikit-learn` para
+gráficas PCA sencillas, `sentencepiece` para el tokenizer SigLIP usado por
+MedSigLIP, y `python-dotenv` para cargar un archivo local opcional `.env` con
+`HF_TOKEN`.
+
+Desde la raíz de este repositorio:
+
+```bash
+uv sync
 ```
 
-### Reproducibilidad
+Registra el entorno como kernel de Jupyter:
 
-Las carpetas `jobs/` y `scripts/` contienen los jobs de Slurm y scripts de
-Python usados para descargar y preprocesar los datasets. Los participantes no
-necesitan ejecutar estos scripts para usar los datasets limpios, pero se
-incluyen por transparencia y reproducibilidad.
+```bash
+uv run python -m ipykernel install --user \
+  --name medical-ai-datathon \
+  --display-name "Medical AI Datathon"
+```
+
+Abre Jupyter:
+
+```bash
+uv run jupyter lab
+```
+
+Dentro de los notebooks, selecciona el kernel `Medical AI Datathon`.
+
+### Descargar Datasets Desde Hugging Face
+
+Los datasets están alojados en repositorios gated de Hugging Face. Después de
+que tu acceso sea aprobado, autentícate una vez:
+
+```bash
+uv run hf auth login
+```
+
+Descarga todos los datasets a una carpeta local:
+
+```bash
+uv run python scripts/download_hf_datasets.py \
+  --output-dir /ruta/local/datasets \
+  --datasets all
+```
+
+Descarga solo algunos datasets:
+
+```bash
+uv run python scripts/download_hf_datasets.py \
+  --output-dir /ruta/local/datasets \
+  --datasets mimic cbis lidc224
+```
+
+Llaves disponibles:
+
+- `mimic`: MIMIC-CXR.
+- `mbrset`: mBRSET.
+- `cbis`: CBIS-DDSM.
+- `lidc224`: LIDC-IDRI redimensionado a 224x224.
+- `lidc384`: LIDC-IDRI redimensionado a 384x384.
+
+Después de descargar, apunta los notebooks a la carpeta usada en `--output-dir`.
+Por ejemplo:
+
+```python
+DATASET_DIR = Path("/ruta/local/datasets/MIMIC-CXR")
+```
