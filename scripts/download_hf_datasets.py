@@ -19,6 +19,10 @@ DATASETS = {
         "repo_id": "dsrestrepo/mbrset-datathon",
         "folder": "mBRSET",
     },
+    "mbrset224": {
+        "repo_id": "dsrestrepo/mbrset-datathon-224",
+        "folder": "mBRSET-224",
+    },
     "cbis": {
         "repo_id": "dsrestrepo/cbis-ddsm-datathon",
         "folder": "CBIS-DDSM-clean",

@@ -4,10 +4,10 @@
 
 ### Dataset Description
 
-This folder contains a clean mBRSET subset prepared for the Medical AI Datathon. Images are
-retinal fundus photographs stored as JPG files. `metadata.csv` includes one row
-per image, with patient-level clinical variables, demographic variables, image
-quality fields, and retinal labels.
+This folder contains a clean mBRSET subset prepared for the Medical AI Datathon.
+Images are retinal fundus photographs stored as JPG files. `metadata.csv`
+includes one row per image, with patient-level clinical variables, demographic
+variables, image quality fields, and retinal labels.
 
 Original dataset: https://physionet.org/content/mbrset/
 
@@ -72,7 +72,8 @@ image = Image.open(root / "images" / metadata.loc[0, "image"])
 
 ### Descripción del Dataset
 
-Esta carpeta contiene un subconjunto limpio de mBRSET preparado para el Medical AI Datathon. Las imágenes son fotografías de fondo de ojo en formato JPG.
+Esta carpeta contiene un subconjunto limpio de mBRSET preparado para el Medical
+AI Datathon. Las imágenes son fotografías de fondo de ojo en formato JPG.
 `metadata.csv` incluye una fila por imagen, con variables clínicas del paciente,
 variables demográficas, campos de calidad de imagen y etiquetas retinianas.
 

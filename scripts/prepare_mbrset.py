@@ -7,15 +7,22 @@ import argparse
 import csv
 import os
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dataset_utils import (
-    copy_images,
     create_staging_directory,
     publish_staging_directory,
     read_datathon_readme,
     remove_staging_directory,
     validate_unique_image,
 )
+
+try:
+    from PIL import Image
+except ImportError as error:
+    raise RuntimeError(
+        "prepare_mbrset.py requires Pillow to resize images."
+    ) from error
 
 
 README = """# mBRSET - versión para el Datathon
@@ -30,14 +37,14 @@ retinopatía diabética, glaucoma, robustez, sesgos, entre otras.
 Dataset original: https://physionet.org/content/mbrset/
 Paper: https://www.nature.com/articles/s41597-025-04627-3
 
-Esta versión limpia incluye las imágenes en reolución de 224x224. `metadata.csv` contiene exactamente
+Esta versión limpia incluye las imágenes en resolución de 448x448. `metadata.csv` contiene exactamente
 una fila por imagen incluida.
 
 ## Estructura
 
 ```text
 mBRSET/
-├── images/       # Todas las imágenes JPG preprocesadas a 224x224 píxeles
+├── images/       # Todas las imágenes JPG preprocesadas a 448x448 píxeles
 ├── metadata.csv
 └── README.md
 ```
@@ -76,7 +83,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--image-folder", default="images")
+    parser.add_argument("--size", type=int, default=448)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
 
 
@@ -101,18 +111,55 @@ def read_patient_splits(path: Path) -> dict[str, str]:
     return patient_splits
 
 
+def resize_images(
+    image_sources: list[tuple[Path, str]],
+    destination: Path,
+    size: int,
+    workers: int,
+) -> None:
+    destination.mkdir()
+
+    def resize_one(task: tuple[Path, str]) -> None:
+        source, image_name = task
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing source image: {source}")
+        with Image.open(source) as image:
+            image = image.convert("RGB")
+            image = image.resize((size, size), Image.Resampling.BILINEAR)
+            image.save(destination / image_name, quality=95)
+
+    completed = 0
+    batch_size = max(workers * 100, 1_000)
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        for start in range(0, len(image_sources), batch_size):
+            batch = image_sources[start : start + batch_size]
+            futures = [executor.submit(resize_one, task) for task in batch]
+            for future in as_completed(futures):
+                future.result()
+                completed += 1
+                if completed % 10_000 == 0 or completed == len(image_sources):
+                    print(
+                        f"Resized {completed:,}/{len(image_sources):,} images",
+                        flush=True,
+                    )
+
+
 def main() -> None:
     args = parse_args()
     source = args.source.resolve()
     labels_csv = source / "labels.csv"
     splits_csv = source / "labels_splits.csv"
-    image_source = source / "images_224"
+    image_source = source / args.image_folder
 
     for required_path in (labels_csv, splits_csv, image_source):
         if not required_path.exists():
             raise FileNotFoundError(f"Required mBRSET path does not exist: {required_path}")
     if args.workers < 1:
         raise ValueError("--workers must be at least 1")
+    if args.size < 1:
+        raise ValueError("--size must be at least 1")
+    if args.output.exists() and args.overwrite:
+        remove_staging_directory(args.output)
 
     patient_splits = read_patient_splits(splits_csv)
     available_images = {
@@ -184,10 +231,10 @@ def main() -> None:
         )
         print(
             f"Skipped {skipped_missing_images:,} metadata rows whose images "
-            "are not present in images_224",
+            f"are not present in {args.image_folder}",
             flush=True,
         )
-        copy_images(image_tasks, staging / "images", args.workers)
+        resize_images(image_tasks, staging / "images", args.size, args.workers)
         (staging / "README.md").write_text(
             read_datathon_readme("mBRSET.md"),
             encoding="utf-8",

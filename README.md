@@ -18,13 +18,13 @@ https://huggingface.co/collections/dsrestrepo/medical-ai-datathon
 
 The repository contains preprocessing code for four datasets:
 
-- **MIMIC-CXR**: chest X-ray images with multi-label thoracic findings and
+1. **MIMIC-CXR**: chest X-ray images with multi-label thoracic findings and
   radiology reports.
-- **mBRSET**: retinal fundus images with ophthalmology labels, clinical
+2. **mBRSET**: retinal fundus images with ophthalmology labels, clinical
   variables, and demographic metadata.
-- **CBIS-DDSM**: mammography images with breast lesion labels and case
+3. **CBIS-DDSM**: mammography images with breast lesion labels and case
   metadata.
-- **LIDC-IDRI**: 3D chest CT volumes with radiologist annotations for lung
+4. **LIDC-IDRI**: 3D chest CT volumes with radiologist annotations for lung
   nodules.
 
 For more details about each dataset, participants should check the original
@@ -39,7 +39,7 @@ The clean datasets are expected under a root folder such as:
 PATH-TO-DATASET/
 ```
 
-#### MIMIC-CXR
+#### 1. MIMIC-CXR
 
 ```text
 PATH-TO-DATASET/MIMIC-CXR/
@@ -65,7 +65,7 @@ Original sources:
 - Paper: https://www.nature.com/articles/s41597-019-0322-0
 - Dataset: https://physionet.org/content/mimic-cxr/
 
-#### mBRSET
+#### 2. mBRSET
 
 ```text
 PATH-TO-DATASET/mBRSET/
@@ -74,9 +74,10 @@ PATH-TO-DATASET/mBRSET/
 └── README.md
 ```
 
-Contains retinal fundus JPG images. `metadata.csv` includes one row per image
-with clinical variables, demographic variables, image quality fields, and
-retinal labels.
+Contains retinal fundus JPG images. The main Hugging Face dataset `mbrset`
+uses 448x448 images. An alternative 224x224 version is available separately as
+`mbrset224`. `metadata.csv` includes one row per image with clinical variables,
+demographic variables, image quality fields, and retinal labels.
 
 Possible tasks:
 
@@ -90,7 +91,7 @@ Original sources:
 - Paper: https://www.nature.com/articles/s41597-025-04627-3
 - Dataset: https://physionet.org/content/mbrset/
 
-#### CBIS-DDSM
+#### 3. CBIS-DDSM
 
 ```text
 PATH-TO-DATASET/CBIS-DDSM-clean/
@@ -114,7 +115,7 @@ Possible tasks:
 
 Original source: https://www.cancerimagingarchive.net/collection/cbis-ddsm/
 
-#### LIDC-IDRI
+#### 4. LIDC-IDRI
 
 ```text
 PATH-TO-DATASET/LIDC-IDRI-clean-224/
@@ -232,7 +233,8 @@ uv run python scripts/download_hf_datasets.py \
 Available dataset keys:
 
 - `mimic`: MIMIC-CXR.
-- `mbrset`: mBRSET.
+- `mbrset`: mBRSET resized to 448x448.
+- `mbrset224`: mBRSET resized to 224x224.
 - `cbis`: CBIS-DDSM resized to 448x448.
 - `cbis224`: CBIS-DDSM resized to 224x224.
 - `lidc224`: LIDC-IDRI resized to 224x224.
@@ -265,13 +267,13 @@ https://huggingface.co/collections/dsrestrepo/medical-ai-datathon
 
 El repositorio contiene código de preprocesamiento para cuatro datasets:
 
-- **MIMIC-CXR**: radiografías de tórax con etiquetas multi-etiqueta de hallazgos
+1. **MIMIC-CXR**: radiografías de tórax con etiquetas multi-etiqueta de hallazgos
   torácicos y reportes radiológicos.
-- **mBRSET**: imágenes de fondo de ojo con etiquetas oftalmológicas, variables
+2. **mBRSET**: imágenes de fondo de ojo con etiquetas oftalmológicas, variables
   clínicas y metadatos demográficos.
-- **CBIS-DDSM**: mamografías con etiquetas de lesiones mamarias y metadatos de
+3. **CBIS-DDSM**: mamografías con etiquetas de lesiones mamarias y metadatos de
   casos.
-- **LIDC-IDRI**: volúmenes CT 3D de tórax con anotaciones de radiólogos para
+4. **LIDC-IDRI**: volúmenes CT 3D de tórax con anotaciones de radiólogos para
   nódulos pulmonares.
 
 Para más información sobre cada dataset, los participantes pueden consultar las
@@ -286,7 +288,7 @@ Los datasets limpios se esperan bajo una carpeta raíz como:
 PATH-TO-DATASET/
 ```
 
-#### MIMIC-CXR
+#### 1. MIMIC-CXR
 
 ```text
 PATH-TO-DATASET/MIMIC-CXR/
@@ -312,7 +314,7 @@ Fuentes originales:
 - Paper: https://www.nature.com/articles/s41597-019-0322-0
 - Dataset: https://physionet.org/content/mimic-cxr/
 
-#### mBRSET
+#### 2. mBRSET
 
 ```text
 PATH-TO-DATASET/mBRSET/
@@ -321,7 +323,9 @@ PATH-TO-DATASET/mBRSET/
 └── README.md
 ```
 
-Contiene imágenes JPG de fondo de ojo. `metadata.csv` incluye una fila por
+Contiene imágenes JPG de fondo de ojo. El dataset principal en Hugging Face,
+`mbrset`, usa imágenes de 448x448. Una versión alternativa de 224x224 está
+disponible por separado como `mbrset224`. `metadata.csv` incluye una fila por
 imagen con variables clínicas, variables demográficas, campos de calidad de
 imagen y etiquetas retinianas.
 
@@ -337,7 +341,7 @@ Fuentes originales:
 - Paper: https://www.nature.com/articles/s41597-025-04627-3
 - Dataset: https://physionet.org/content/mbrset/
 
-#### CBIS-DDSM
+#### 3. CBIS-DDSM
 
 ```text
 PATH-TO-DATASET/CBIS-DDSM-clean/
@@ -362,7 +366,7 @@ Tareas posibles:
 
 Fuente original: https://www.cancerimagingarchive.net/collection/cbis-ddsm/
 
-#### LIDC-IDRI
+#### 4. LIDC-IDRI
 
 ```text
 PATH-TO-DATASET/LIDC-IDRI-clean-224/
@@ -483,7 +487,8 @@ uv run python scripts/download_hf_datasets.py \
 Llaves disponibles:
 
 - `mimic`: MIMIC-CXR.
-- `mbrset`: mBRSET.
+- `mbrset`: mBRSET redimensionado a 448x448.
+- `mbrset224`: mBRSET redimensionado a 224x224.
 - `cbis`: CBIS-DDSM redimensionado a 448x448.
 - `cbis224`: CBIS-DDSM redimensionado a 224x224.
 - `lidc224`: LIDC-IDRI redimensionado a 224x224.
