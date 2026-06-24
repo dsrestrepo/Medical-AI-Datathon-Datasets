@@ -51,11 +51,14 @@ package_hf_data_*.log
 package_hf_data_*.err
 publish_hf_data_*.log
 publish_hf_data_*.err
+test_hf_download_*.log
+test_hf_download_*.err
 upload_hf*.slurm
 upload_hf*.sh
 audit_hf*.slurm
 package_hf*.slurm
 publish_hf*.slurm
+test_download_hf*.slurm
 jobs/*hf*.slurm
 scripts/upload_hf_dataset.py
 scripts/audit_hf_dataset_upload.py
